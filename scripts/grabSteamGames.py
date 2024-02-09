@@ -15,6 +15,7 @@ def connect_to_database():
 
 games = []
 data_properties = [
+    "steam_appid",
     "name",
     "required_age",
     "is_free",
@@ -25,16 +26,14 @@ data_properties = [
 def insert_game(connection, game):
     cursor = connection.cursor()
 
-    # Check if 'metacritic' key exists in game data
-    metacritic_score = game['metacritic']['score'] if 'metacritic' in game and 'score' in game['metacritic'] else None
-
+    # If the game doesn't exist, insert it into the database
+    metacritic_score = game.get('metacritic', {}).get('score', -1)
     insert_query = """
-        INSERT INTO games (name, required_age, is_free, metacritic_score)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO games (steam_appid, name, required_age, is_free, metacritic_score)
+        VALUES (%s, %s, %s, %s, %s)
     """
-
     cursor.execute(
-        insert_query, (game['name'], game['required_age'], game['is_free'], metacritic_score))
+        insert_query, (game['steam_appid'], game['name'], game['required_age'], game['is_free'], metacritic_score))
 
     connection.commit()
 
@@ -47,18 +46,21 @@ def getSteamGames(connection):
     data = response.json()
 
     counter = 0
-    for app in data['applist']['apps']:
-        if counter >= 250:
+    appid_counter = 10
+    while True:
+        if counter >= 10000:
             break
         try:
-            appids.append(app['appid'])
-            if getGameDetails(app['appid'], connection):
+            gameObject = getGameDetails(appid_counter, connection)
+            if gameObject and 'name' in gameObject:
                 success += 1
+                print(f"Success: {appid_counter} {gameObject['name']}")
             else:
-                print("Failed: ", app['appid'])
+                print("Failed: ", appid_counter)
         except:
             pass
         counter += 1
+        appid_counter += 10
     print(f"{success}/{len(appids)}")
     return appids
 
@@ -81,7 +83,7 @@ def getGameDetails(appid, connection):
     games.append(gameDict)
     insert_game(connection, gameDict)
     print(gameDict)
-    return True
+    return gameDict
 
 
 def main():
