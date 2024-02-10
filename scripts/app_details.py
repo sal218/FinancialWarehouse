@@ -2,12 +2,12 @@ import requests
 
 
 class SteamGame:
-    def __init__(self, appid, name, required_age, is_free, metacritic_score):
-        self.appid = appid
+    def __init__(self, steam_appid: int, name: str, required_age: int, is_free: int, metacritic: int):
+        self.steam_appid = steam_appid
         self.name = name
         self.required_age = required_age
         self.is_free = is_free
-        self.metacritic_score = metacritic_score
+        self.metacritic = metacritic
 
     data_properties = [
         "steam_appid",
@@ -30,11 +30,10 @@ class SteamAPI:
             try:
                 game_object = self.get_game_details(i)
                 if game_object:
-                    self.db_interface.insert_steam_games(game_object)
-                # if game_object and 'name' in game_object:
-                #     game = SteamGame(game_object['steam_appid'], game_object['name'], game_object['required_age'],
-                #                      game_object['is_free'], game_object.get('metacritic', {}).get('score', -1))
-                #     self.db_manager.insert_steam_games(game)
+                    game = SteamGame(game_object['steam_appid'], game_object['name'], game_object['required_age'],
+                                     game_object['is_free'], game_object.get('metacritic', {}).get('score', -1))
+                    print(game.name)
+                    self.db_interface.insert_steam_games(game)
 
             except Exception as e:
                 print(f"Error: {e}")
