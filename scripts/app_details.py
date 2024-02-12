@@ -1,4 +1,5 @@
 import requests
+from tqdm import tqdm
 
 
 class SteamGame:
@@ -19,20 +20,18 @@ class SteamGame:
 
 
 class SteamAPI:
-    def __init__(self, db_manager, db_interface):
-        self.db_manager = db_manager
+    def __init__(self, db_interface):
         self.db_interface = db_interface
 
     def get_steam_games(self):
         appid_counter = 10
-        appid_end = 100
-        for i in range(appid_counter, appid_end, 10):
+        appid_end = 1000
+        for i in tqdm(range(appid_counter, appid_end, 10)):
             try:
                 game_object = self.get_game_details(i)
                 if game_object:
                     game = SteamGame(game_object['steam_appid'], game_object['name'], game_object['required_age'],
                                      game_object['is_free'], game_object.get('metacritic', {}).get('score', -1))
-                    print(game.name)
                     self.db_interface.insert_steam_games(game)
 
             except Exception as e:
