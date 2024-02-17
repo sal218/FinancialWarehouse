@@ -22,6 +22,14 @@ connection = oracledb.connect(
     wallet_password=wallet_password,
 )
 
+
+cursor = connection.cursor()
+cursor.execute("SELECT * FROM PERSONS")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
+
+
 # host = "127.0.0.1"
 # user = "root"
 # database = "test_steam_db"
@@ -29,16 +37,3 @@ connection = oracledb.connect(
 # db_manager = DatabaseManager(host, user, database)
 # db_interface = DatabaseInterface(db_manager)
 # steam_api = SteamAPI(db_interface)
-
-# Assuming `connection` is your database connection object
-cursor = connection.cursor()
-
-# Execute the SELECT statement
-cursor.execute("SELECT * FROM PERSONS")
-
-# Fetch all rows from the query
-rows = cursor.fetchall()
-
-# Print all rows
-for row in rows:
-    print(row)
