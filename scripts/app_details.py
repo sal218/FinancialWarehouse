@@ -24,18 +24,21 @@ class SteamAPI:
         self.db_interface = db_interface
 
     def get_steam_games(self):
-        appid_counter = 10
-        appid_end = 1000
-        for i in tqdm(range(appid_counter, appid_end, 10)):
-            try:
-                game_object = self.get_game_details(i)
-                if game_object:
-                    game = SteamGame(game_object['steam_appid'], game_object['name'], game_object['required_age'],
-                                     game_object['is_free'], game_object.get('metacritic', {}).get('score', -1))
-                    self.db_interface.insert_steam_games(game)
+        appid_counter = 50000
+        appid_end = 100000
+        with tqdm(total=appid_end-appid_counter, colour='green') as pbar:
+            pbar.set_description("Processing app ids")
+            for i in range(appid_counter, appid_end, 10):
+                try:
+                    game_object = self.get_game_details(i)
+                    if game_object:
+                        game = SteamGame(game_object['steam_appid'], game_object['name'], game_object['required_age'],
+                                         game_object['is_free'], game_object.get('metacritic', {}).get('score', -1))
+                        self.db_interface.insert_steam_games(game)
+                    pbar.update(10)
 
-            except Exception as e:
-                print(f"Error: {e}")
+                except Exception as e:
+                    print(f"Error: {e}")
 
     def get_game_details(self, appid):
         gameDict = {}
