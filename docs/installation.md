@@ -31,7 +31,7 @@ To connect to the database, create a `.env` file in the root directory of the pr
 Add the wallet files from Oracle into this directory on your computer.
 
 ```bash
-C:\opt\OracleCloud\PPH6UWOPD8FAD7PW
+C:\opt\OracleCloud\JSX031OXSTSUSO9D
 ```
 
 ## Running the Application
