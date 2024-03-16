@@ -73,7 +73,7 @@ def run_script():
         'Enter the number of the ETL script you want to run', type=int) - 1
     script = scripts[choice]
     script_class = script_classes[script]
-    script_class(DW_Interface, DailyTransactions, Script_Tracker)
+    script_class(DW_Interface, Daily_Transactions_ETL, Script_Tracker)
 
 if __name__ == '__main__':
     run_script()
