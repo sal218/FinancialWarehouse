@@ -1,6 +1,9 @@
 import os
 from data_warehouse.connection import DW_Interface
 from scripts.ETL.company_table import Company_ETL
+from scripts.ETL.oil_table import Oil_ETL
+from scripts.ETL.gold_table import Gold_ETL
+from scripts.ETL.currency_table import Currency_ETL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,4 +15,7 @@ wallet_location = os.getenv('WALLET_LOCATION')
 wallet_password = os.getenv('WALLET_PASSWORD')
 
 DW_Interface = DW_Interface(config_dir, user, password, dsn, wallet_location, wallet_password)
-Company_ETL = Company_ETL(DW_Interface)
+#Company_ETL = Company_ETL(DW_Interface)
+#Oil_ETL = Oil_ETL(DW_Interface)
+#Gold_ETL = Gold_ETL(DW_Interface)
+Currency_ETL = Currency_ETL(DW_Interface)
