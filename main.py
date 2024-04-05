@@ -20,6 +20,13 @@ from scripts.ETL.stock.stock import Stock_ETL
 from scripts.ETL.date.date import Date_ETL
 from scripts.ETL.index_fund.sp_500 import SP_500_ETL
 from scripts.ETL.bond.bond import Bond_ETL
+
+#machine_learning
+from machine_learning.sklearn_test import sklearn_test
+
+# Visualization Utils
+from scripts.Visualization.Visualization import Visualization
+import pandas as pd
 from scripts.ETL.index_fund.vti import VTI_ETL
 from scripts.ETL.utils.aggerate_value import Aggerate_Value_ETL
 
@@ -106,4 +113,10 @@ def run_script():
     script_class(DW_Interface, Daily_Transactions_ETL_Instance, Script_Tracker)
 
 if __name__ == '__main__':
+    #machine_learning = sklearn_test(DW_Interface)
+    #machine_learning.LinearRegression()
+    #machine_learning.Random_Forest()
+    #machine_learning.MLP()
+    #machine_learning.SVR()
     run_script()
+    
