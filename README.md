@@ -1,4 +1,4 @@
-# Finicial Warehouse Analysis
+# Financial Warehouse Analysis
 
 ## Project Overview
 
